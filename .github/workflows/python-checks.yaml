@@ -1,7 +1,7 @@
 name: Python CI
 
 on:
-  pull_request:
+  push:
     branches:
       - main  # sau oricare branch pe care doriți să o monitorizați
 
