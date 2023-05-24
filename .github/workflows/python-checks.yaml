@@ -1,9 +1,7 @@
 name: Python CI
 
 on:
-  push:
-    branches:
-      - main  # sau oricare branch pe care doriți să o monitorizați
+  workflow_dispatch:
 
 jobs:
   build:
@@ -24,16 +22,21 @@ jobs:
         pip install pylint flake8 black bandit pytype
 
     - name: Run Pylint
-      run: pylint **/*.py || true
+      run: pylint **/*.py
+      if: ${{ always() }}
 
     - name: Run Flake8
-      run: flake8 **/*.py || true
+      run: flake8 **/*.py
+      if: ${{ always() }}
 
     - name: Run Black
       run: black --check **/*.py || black **/*.py
+      if: ${{ always() }}
 
     - name: Run Bandit
-      run: bandit -r . || true
+      run: bandit -r .
+      if: ${{ always() }}
 
     - name: Run Pytype
-      run: pytype **/*.py || true
+      run: pytype **/*.py
+      if: ${{ always() }}
