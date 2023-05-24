@@ -1,0 +1,39 @@
+name: Python CI
+
+on:
+  pull_request:
+    branches:
+      - main  # sau oricare branch pe care doriți să o monitorizați
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint flake8 black bandit pytype
+
+    - name: Run Pylint
+      run: pylint **/*.py || true
+
+    - name: Run Flake8
+      run: flake8 **/*.py || true
+
+    - name: Run Black
+      run: black --check **/*.py || black **/*.py
+
+    - name: Run Bandit
+      run: bandit -r . || true
+
+    - name: Run Pytype
+      run: pytype **/*.py || true
